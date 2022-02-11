@@ -8,7 +8,7 @@ const detailes_view = document.querySelector('.detailes_view');
 const full_view = document.querySelector('.container-three');
 
 
-
+let result = new Student();
 
 student_form.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -43,7 +43,7 @@ student_form.addEventListener('submit', function (e) {
             eng: eng.value,
             math: math.value,
             sci: sci.value,
-            socoal: s_sci.value,
+            social: s_sci.value,
             reli: reli.value,
         })
         dataSend('result_app', student_data);
@@ -67,19 +67,17 @@ allDataStudent()
 
 function allDataStudent() {
     let all_data = getData('result_app');
-
     let data = '';
     all_data.map((student, index) => {
         data += `
-  
          <tr>
           <td>${ index + 1}</td>
           <td>${ student.name_one}</td>
           <td>${ student.roll}</td>
           <td>${ student.class_name}</td>
           <td>${ student.gender}</td>
-          <td>Gpa</td>
-          <td>A+</td>
+          <td>${result.finalCgpa( student.ban, student.eng,student.math,student.sci,student.social,student.reli,).result_cgpa }</td>
+          <td>${result.finalCgpa( student.ban, student.eng,student.math,student.sci,student.social,student.reli,).result_grade }</td>
           <td><img style="width:40px;height:40px;margin:0;object-fit: cover;" src="${ student.photo}" alt=""></td>
           <td>
           <button class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="getSingleResult(${ index })">
@@ -97,23 +95,25 @@ function allDataStudent() {
 
 function delete_student(id) {
 
-    let conf =  confirm('Are you sure');
-    if(conf){
+    let conf = confirm('Are you sure');
+    if (conf) {
         let storage_data = getData('result_app');
         storage_data.splice(id, 1);
         dataSend('result_app', storage_data);
         allDataStudent();
-    }else{
-     return false;
+    } else {
+        return false;
     };
-    
+
 };
 const student_result_data = document.querySelector('.student-result-data');
 
-function getSingleResult(index){
- let storageData = getData('result_app');
 
- student_result_data.innerHTML = `
+function getSingleResult(index) {
+
+    let storageData = getData('result_app');
+
+    student_result_data.innerHTML = `
  
  <img style="width: 150px; height: 200; object-fit: cover; display: block; text-align: ccenter;" src="${storageData[index].photo}" alt="">
  <div class="stu_content">
@@ -138,42 +138,44 @@ function getSingleResult(index){
      <tbody>
          <tr>
              <td>Bangla</td>
-             <td>80</td>
-             <td>80</td>
-             <td>80</td>
+             <td>${storageData[index].ban}</td>
+             <td>${result.result(storageData[index].ban).gpaCal}</td>
+             <td>${result.result(storageData[index].ban).gradeCal}</td>
+             <td rowspan="6">${result.finalCgpa( storageData[index].ban, storageData[index].eng,storageData[index].math,storageData[index].sci,storageData[index].social,storageData[index].reli,).result_cgpa }</td>
+             <td rowspan="6">${result.finalCgpa( storageData[index].ban, storageData[index].eng,storageData[index].math,storageData[index].sci,storageData[index].social,storageData[index].reli,).result_grade }</td>
          </tr>
          <tr>
              <td>English</td>
-             <td>80</td>
-             <td>80</td>
-             <td>80</td>
+             <td>${storageData[index].eng}</td>
+             <td>${result.result(storageData[index].eng).gpaCal}</td>
+             <td>${result.result(storageData[index].eng).gradeCal}</td>
          </tr>
          <tr>
              <td>Math</td>
-             <td>80</td>
-             <td>80</td>
-             <td>80</td>
+             <td>${storageData[index].math}</td>
+             <td>${result.result(storageData[index].math).gpaCal}</td>
+             <td>${result.result(storageData[index].math).gradeCal}</td>
          </tr>
          <tr>
              <td>Science</td>
-             <td>80</td>
-             <td>80</td>
-             <td>80</td>
+             <td>${storageData[index].sci}</td>
+             <td>${result.result(storageData[index].sci).gpaCal}</td>
+             <td>${result.result(storageData[index].sci).gradeCal}</td>
          </tr>
          <tr>
              <td>Social</td>
-             <td>80</td>
-             <td>80</td>
-             <td>80</td>
+             <td>${storageData[index].social}</td>
+             <td>${result.result(storageData[index].social).gpaCal}</td>
+             <td>${result.result(storageData[index].social).gradeCal}</td>
          </tr>
 
          <tr>
              <td>Religion</td>
-             <td>80</td>
-             <td>80</td>
-             <td>80</td>
+             <td>${storageData[index].reli}</td>
+             <td>${result.result(storageData[index].reli).gpaCal}</td>
+             <td>${result.result(storageData[index].reli).gradeCal}</td>
          </tr>
-         
+          
      </tbody>
  </table>
  
